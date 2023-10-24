@@ -4,6 +4,8 @@ const NaturalLanguageUnderstandingV1 = require("ibm-watson/natural-language-unde
 const SpeechToTextV1 = require("ibm-watson/speech-to-text/v1");
 
 const fs = require("fs");
+// const fs = require('browserify-fs');
+
 const axios = require("axios");
 
 
@@ -15,7 +17,8 @@ function getAudioFile() {
 
 // function to get the sentiment report
 function getSentimentReport(txtFile) {
-    console.log("Transcript: \n", txtFile);
+  return new Promise((resolve, reject) => {
+    // console.log("Transcript: \n", txtFile);
   const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
     version: "2022-04-07",
     authenticator: new IamAuthenticator({
@@ -40,22 +43,25 @@ function getSentimentReport(txtFile) {
     .analyze(analyzeParams)
     .then((analysisResults) => {
       const keywords = analysisResults.result.keywords;
-      for (const keyword of keywords) {
-        console.log("Keyword:", keyword.text);
-        console.log(
-          "Sentiment:",
-          `Score: ${keyword.sentiment.score}, Label: ${keyword.sentiment.label}`
-        );
-        console.log("Emotion:", keyword.emotion);
-        console.log("Relevance:", keyword.relevance);
-        console.log("Count:", keyword.count);
-      }
+      return resolve(keywords);
+      // for (const keyword of keywords) {
+      //   console.log("Keyword:", keyword.text);
+      //   console.log(
+      //     "Sentiment:",
+      //     `Score: ${keyword.sentiment.score}, Label: ${keyword.sentiment.label}`
+      //   );
+      //   console.log("Emotion:", keyword.emotion);
+      //   console.log("Relevance:", keyword.relevance);
+      //   console.log("Count:", keyword.count);
+      // }
       //   console.log(JSON.stringify(analysisResults, null, 2));
     })
     .catch((err) => {
       console.log("error:", err);
     });
+  });
 }
+
 
 // create a txt file from an audio file
 function getSpeechToText() {
@@ -63,7 +69,8 @@ function getSpeechToText() {
   const serviceURL =
     "https://api.au-syd.speech-to-text.watson.cloud.ibm.com/instances/fd9fa94f-db7f-48cd-b5df-c558fd6fbc8b";
 
-  audioFile = getAudioFile();
+  // audioFile = getAudioFile();
+  audioFile = 'storeChat.mp3'
 
   // Create a readable stream from the audio file
   const audioStream = fs.createReadStream(audioFile);
@@ -91,7 +98,8 @@ function getSpeechToText() {
     })
     .then((response) => {
       txtFile = response.data.results[0].alternatives[0].transcript;
-      getSentimentReport(txtFile);
+      // getSentimentReport(txtFile);
+      return getSentimentReport(txtFile)
       //   console.log(response.data.results[0].alternatives[0].transcript);
       //   console.log(JSON.stringify(response.data, null, 2));
     })
@@ -99,11 +107,16 @@ function getSpeechToText() {
       console.error("Error:", error);
     });
 }
-function MainApp() {
-  getSpeechToText();
+async function MainApp() {
+  try {
+    const sentimentReport = await getSpeechToText();
+    return await sentimentReport;
+  } catch (error) {
+    throw error;
+  }
 }
 
-MainApp();
+// MainApp();
 
 // Exporting functions
 module.exports = { getSentimentReport, getSpeechToText, getAudioFile, MainApp };

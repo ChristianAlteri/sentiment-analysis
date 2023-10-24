@@ -1,5 +1,5 @@
 
-
+// import { getSentimentReport, getSpeechToText, getAudioFile, MainApp } from "../../helper.js";
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 // import Swiper from 'swiper';
@@ -9,6 +9,7 @@ import 'swiper/css';
 
 const ChartComponent = () => {
 
+// newData = MainApp()
 
 const data = [
   {
@@ -130,7 +131,8 @@ const chartRef = useRef(null);
       Keyword Sentiment Analysis
       </h1>
       <div className="
-      
+      flex
+      justify-center
       ">
         <canvas id="barChart"></canvas>
       </div>
