@@ -10,7 +10,7 @@ async function processAudioAndGenerateSentimentReport() {
   
   try {
     // Step 1: Get the audio file (replace with your actual logic)
-    const audioFilePath = path.join(__dirname, "storeChat.mp3");
+    const audioFilePath = path.join(__dirname, "obama.mp3");
 
     // Step 2: Convert audio to text using Watson Speech to Text
     const apiKey = "w8ClcQkBBum8anBv2v1Cwnvd2_T30ywjw7QCfGh6AcF3";
@@ -58,7 +58,7 @@ async function processAudioAndGenerateSentimentReport() {
         keywords: {
           sentiment: true,
           emotion: true,
-          limit: 15,
+          limit: 4,
         },
       },
     };

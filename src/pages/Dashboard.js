@@ -1,6 +1,7 @@
 
 import AudioRecorder from "../components/AudioRecorder";
 import ChartComponent from "../components/ChartComponent";
+import SentimentButton from "../components/SentimentButton";
 // import AudioRecorder2 from "../components/AudioRecorder2";
 import SwiperComponent from "../components/Swiper";
 
@@ -15,7 +16,8 @@ const Dashboard = () => {
     ">
       {/* <SwiperComponent /> */}
       <ChartComponent />
-      <AudioRecorder />
+      {/* <AudioRecorder /> */}
+      <SentimentButton />
 
     </div>
    );
